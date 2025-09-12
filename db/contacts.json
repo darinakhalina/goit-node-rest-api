@@ -58,5 +58,11 @@
     "name": "Alec Howard",
     "email": "Donec.elementum@scelerisquescelerisquedui.net",
     "phone": "(748) 206-2688"
+  },
+  {
+    "id": "f615ea20-52be-4a13-83c1-15586257d632",
+    "name": "Updated name",
+    "email": "new_test@example.com",
+    "phone": "(123) 456-7890"
   }
 ]
