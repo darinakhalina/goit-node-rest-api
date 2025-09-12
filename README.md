@@ -38,9 +38,9 @@
 
 ![POST_contacts_id_no_name](./assets/POST_contacts_id_no_name.png)
 
-### Немає phone
+### Немає email
 
-![POST_contacts_id_no_phone](./assets/POST_contacts_id_no_phone.png)
+![POST_contacts_id_no_email](./assets/POST_contacts_id_no_email.png)
 
 ### Невірний email
 
