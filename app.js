@@ -4,7 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import contactsRouter from "./routes/contactsRouter.js";
-// import "./db/sequelize.js";
+import Contact from "./db/models/Contact.js";
 
 const app = express();
 
