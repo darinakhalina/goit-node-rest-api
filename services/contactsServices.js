@@ -73,4 +73,8 @@ async function updateContact(contactId, data) {
     }
 }
 
-export default { listContacts, getContactById, removeContact, addContact, updateContact };
+async function updateStatusContact(contactId, favoriteValue) {
+    return updateContact(contactId, { favorite: favoriteValue });
+}
+
+export default { listContacts, getContactById, removeContact, addContact, updateContact, updateStatusContact };
