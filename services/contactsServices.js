@@ -1,76 +1,39 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { v4 as uuid } from "uuid";
-
-const contactsPath = path.resolve('db', 'contacts.json');
+import Contact from "../db/models/Contact.js";
 
 async function listContacts() {
-    try {
-        const data = await fs.readFile(contactsPath, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('Failed to read contacts file.', error.message);
-        return [];
-    }
+    return await Contact.findAll();
 }
 
 async function getContactById(contactId) {
-    const contacts = await listContacts();
-    const contact = contacts.find((contact) => contact.id === contactId);
-    return contact || null;
+    return await Contact.findByPk(contactId);
 }
 
 async function removeContact(contactId) {
-    const contacts = await listContacts();
-    const index = contacts.findIndex((contact) => contact.id === contactId);
+    const contact = await getContactById(contactId);
 
-    if (index === -1) {
+    if (!contact) {
         return null;
     }
 
-    const [removedContact] = contacts.splice(index, 1);
+    await contact.destroy();
 
-    try {
-        await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-        return removedContact;
-    } catch (error) {
-        console.error('Failed to write contacts file.', error.message);
-        return null;
-    }
+    return contact;
 }
 
-async function addContact({ name, email, phone }) {
-    const contacts = await listContacts();
-
-    const newContact = { id: uuid(), name, email, phone };
-
-    contacts.push(newContact);
-
-    try {
-        await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-        return newContact;
-    } catch (error) {
-        console.error("Failed to write contacts file.", error.message);
-        return null;
-    }
+async function addContact({ name, email, phone, favorite = false }) {
+    return await Contact.create({ name, email, phone, favorite });
 }
 
 async function updateContact(contactId, data) {
-    const contacts = await listContacts();
-    const index = contacts.findIndex((c) => c.id === contactId);
-    if (index === -1) return null;
+    const contact = await getContactById(contactId);
 
-    const prev = contacts[index];
-    const updated = { ...prev, ...data };
-    contacts[index] = updated;
-
-    try {
-        await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-        return updated;
-    } catch (error) {
-        console.error('Failed to write contacts file.', error.message);
+    if (!contact) {
         return null;
     }
+
+    await contact.update(data);
+
+    return contact;
 }
 
 async function updateStatusContact(contactId, favoriteValue) {
