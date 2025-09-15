@@ -3,13 +3,21 @@ import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../helpers/ctrlWrapper.js";
 
 const getAllContacts = async (req, res) => {
-    const result = await contactsService.listContacts();
+    const {
+        user: { id: userId },
+        query,
+    } = req;
+    const result = await contactsService.listContacts({ userId, query });
+
     res.status(200).json(result);
 };
 
 const getOneContact = async (req, res) => {
-    const { id } = req.params;
-    const result = await contactsService.getContactById(id);
+    const {
+        params: { id: contactId },
+        user: { id: userId },
+    } = req;
+    const result = await contactsService.getContactById({ contactId, userId });
 
     if (!result) {
         throw HttpError(404, "Not found");
@@ -19,8 +27,11 @@ const getOneContact = async (req, res) => {
 };
 
 const deleteContact = async (req, res) => {
-    const { id } = req.params;
-    const result = await contactsService.removeContact(id);
+    const {
+        params: { id: contactId },
+        user: { id: userId },
+    } = req;
+    const result = await contactsService.removeContact({ contactId, userId });
 
     if (!result) {
         throw HttpError(404, "Not found");
@@ -30,14 +41,22 @@ const deleteContact = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-    const result = await contactsService.addContact(req.body);
+    const {
+        body,
+        user: { id: userId },
+    } = req;
+    const result = await contactsService.addContact({ body, userId });
 
     res.status(201).json(result);
 };
 
 const updateContact = async (req, res) => {
-    const { id } = req.params;
-    const result = await contactsService.updateContact(id, req.body);
+    const {
+        params: { id: contactId },
+        body,
+        user: { id: userId },
+    } = req;
+    const result = await contactsService.updateContact({ contactId, body, userId });
 
     if (!result) {
         throw HttpError(404, "Not found");
@@ -47,10 +66,15 @@ const updateContact = async (req, res) => {
 };
 
 const updateStatusContact = async (req, res) => {
-    const { id } = req.params;
-    const { favorite } = req.body;
+    const {
+        params: { id: contactId },
+        body,
+        user: { id: userId },
+    } = req;
 
-    const result = await contactsService.updateStatusContact(id, favorite);
+    const { favorite } = body;
+
+    const result = await contactsService.updateStatusContact({ contactId, body: { favorite }, userId });
 
     if (!result) {
         throw HttpError(404, "Not found");
