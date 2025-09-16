@@ -2,11 +2,10 @@
 
 ## darinakhalina / goit-node-rest-api
 
-### Гілка 03-postgresql
-https://goit-node-rest-api-06hj.onrender.com
+### Гілка 04-auth
+https://goit-node-rest-api-hw-04.onrender.com
 
 ## Запуск
-
 
 ### Встанови залежності
 
@@ -37,3 +36,7 @@ npm run start
 ```bash
 npm run dev
 ```
+
+
+## Демо
+
