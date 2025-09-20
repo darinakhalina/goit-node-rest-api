@@ -2,8 +2,8 @@
 
 ## darinakhalina / goit-node-rest-api
 
-### Гілка 04-auth
-https://goit-node-rest-api-hw-04.onrender.com
+### Гілка hw05-avatars
+https://goit-node-rest-api-hw05.onrender.com
 
 ## Запуск
 
@@ -35,4 +35,10 @@ npm run start
 
 ```bash
 npm run dev
+```
+
+## Запустити тести
+
+```bash
+npm run test
 ```
