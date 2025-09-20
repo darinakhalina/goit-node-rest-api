@@ -1,73 +1,125 @@
 # goit-node-rest-api
 
-## GET /api/contacts
+## darinakhalina / goit-node-rest-api
 
-![GET_contacts](./assets/GET_contacts.png)
+### Гілка 04-auth
+https://goit-node-rest-api-hw-04.onrender.com
 
-## POST /api/contacts
+## Запуск
+
+### Встанови залежності
 
 ```bash
-{ "name": "John Doe", "email": "john.doe@example.com", "phone": "(123) 456-7890" }
+npm install
 ```
 
-![POST_contacts](./assets/POST_contacts.png)
+## Створи файл .env
 
-## GET /api/contacts/:id
+```bash
+DATABASE_DIALECT=postgres
+DATABASE_NAME=name
+DATABASE_USERNAME=username
+DATABASE_PASSWORD=password
+DATABASE_HOST=host
+DATABASE_PORT=port
+JWT_SECRET=secret
+```
 
-### Знайдено
+## Запусти веб-додаток
 
-![GET_contacts_id_found](./assets/GET_contacts_id_found.png)
+```bash
+npm run start
+```
 
-### Не знайдено
+## Запусти веб-додаток у режимі розробки
 
-![GET_contacts_id_not_found](./assets/GET_contacts_id_not_found.png)
+```bash
+npm run dev
+```
 
-## DELETE /api/contacts/:id
 
-### Видалено
+## Демо
 
-![DELETE_contacts_id_deleted](./assets/DELETE_contacts_id_deleted.png)
+### POST /api/auth/register
 
-### Не знайдено
+![post-auth-register](./assets/post-auth-register.png)
 
-![DELETE_contacts_id_not_found](./assets/DELETE_contacts_id_not_found.png)
+![post-auth-register-email-error](./assets/post-auth-register-email-error.png)
 
-## POST /api/contacts
+![post-auth-register-duplicate-error](./assets/post-auth-register-duplicate-error.png)
 
-### Немає name
+### POST /api/auth/login
 
-![POST_contacts_id_no_name](./assets/POST_contacts_id_no_name.png)
+![post-auth-login](./assets/post-auth-login.png)
 
-### Немає email
+![post-auth-login-pass-error](./assets/post-auth-login-pass-error.png)
 
-![POST_contacts_id_no_email](./assets/POST_contacts_id_no_email.png)
+![post-auth-login-email-error](./assets/post-auth-login-email-error.png)
 
-### Невірний email
+### GET /api/auth/current
 
-![POST_contacts_id_invalid_email](./assets/POST_contacts_id_invalid_email.png)
+![get-auth-current](./assets/get-auth-current.png)
 
-### Невірний phone
+![get-auth-current-no-token-error](./assets/get-auth-current-no-token-error.png)
 
-![POST_contacts_id_invalid_phone](./assets/POST_contacts_id_invalid_phone.png)
+### POST /api/auth/logout
 
-## PUT /api/contacts/:id
+![post-auth-logout](./assets/post-auth-logout.png)
 
-### Оновлено
+### PATCH /api/auth/subscription
 
-![PUT_contacts_id_updated](./assets/PUT_contacts_id_updated.png)
+![patch-auth-subscription](./assets/patch-auth-subscription.png)
 
-### Пусте тіло
+![patch-auth-subscription-error](./assets/patch-auth-subscription-error.png)
 
-![PUT_contacts_id_empty_body](./assets/PUT_contacts_id_empty_body.png)
+### GET /api/contacts/
 
-### Невалідний phone
+![get-contacts](./assets/get-contacts.png)
 
-![PUT_contacts_id_invalid_phone](./assets/PUT_contacts_id_invalid_phone.png)
+### GET /api/contacts/:id
 
-### Невалідний email
+![get-contacts-id](./assets/get-contacts-id.png)
 
-![PUT_contacts_id_invalid_email](./assets/PUT_contacts_id_invalid_email.png)
+### POST /api/contacts/
 
-### Невалідний name
+![post-contacts](./assets/post-contacts.png)
 
-![PUT_contacts_id_invalid_name](./assets/PUT_contacts_id_invalid_name.png)
+### PUT /api/contacts/:id
+
+![put-contacts-id](./assets/put-contacts-id.png)
+
+### PATCH /api/contacts/:id/favorite
+
+![patch-contacts-id-favorite](./assets/patch-contacts-id-favorite.png)
+
+### DELETE /api/contacts/:id
+
+![delete-contacts-id](./assets/delete-contacts-id.png)
+
+### Basic pagination
+
+![get-contacts-pagination](./assets/get-contacts-pagination.png)
+
+### Second page
+
+![get-contacts-pagination-page-2](./assets/get-contacts-pagination-page-2.png)
+
+### Filter by favorite (true)
+
+![get-contacts-filter-favorite-true](./assets/get-contacts-filter-favorite-true.png)
+
+### Search
+
+![get-contacts-search-name](./assets/get-contacts-search-name.png)
+
+### Combined filter (favorite + name)
+
+![get-contacts-filter-favorite-true-name](./assets/get-contacts-filter-favorite-true-name.png)
+
+### Empty result
+
+![get-contacts-empty-result](./assets/get-contacts-empty-result.png)
+
+### Not authorized
+
+![get-contacts-not-authorized](./assets/get-contacts-not-authorized.png)
