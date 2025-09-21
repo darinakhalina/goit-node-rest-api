@@ -6,7 +6,12 @@ import authControllers from "../controllers/authControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
 
-import { registerSchema, loginSchema, updateSubscriptionSchema } from "../schemas/authSchemas.js";
+import {
+    registerSchema,
+    loginSchema,
+    updateSubscriptionSchema,
+    emailUserSchema,
+} from "../schemas/authSchemas.js";
 
 import upload from "../middlewares/upload.js";
 
@@ -16,6 +21,14 @@ authRouter.post(
     "/register",
     validateBody(registerSchema),
     authControllers.registerUser
+);
+
+authRouter.get("/verify/:verificationToken", authControllers.verifyUser);
+
+authRouter.post(
+    "/verify",
+    validateBody(emailUserSchema),
+    authControllers.resendVerificationMail
 );
 
 authRouter.post(

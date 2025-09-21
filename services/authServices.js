@@ -2,11 +2,13 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import bcrypt from "bcrypt";
 import gravatar from "gravatar";
+import { v4 as uuid } from "uuid";
 
 import User from "../db/models/User.js";
 
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwt.js";
+import { sendVerificationMail } from "../helpers/sendEmail.js";
 
 const avatarsDirPath = path.resolve("public", "avatars");
 
@@ -18,8 +20,45 @@ const registerUser = async payload => {
     const email = payload.email.trim().toLowerCase();
     const avatarURL = gravatar.url(email, { s: "250", d: "mp", r: "g" }, true);
     const hashPassword = await bcrypt.hash(payload.password, 10);
-    return User.create({ ...payload, email, password: hashPassword, avatarURL, });
+    const verificationToken = uuid();
+
+    await sendVerificationMail(payload.email, verificationToken);
+
+    return User.create({
+        ...payload,
+        email,
+        password: hashPassword,
+        avatarURL,
+        verificationToken,
+    });
 }
+
+const verifyUser = async (verificationToken) => {
+    const user = await findUser({ verificationToken });
+
+    if (!user) {
+        throw HttpError(404, "User not found");
+    }
+
+    await user.update(
+        { verify: true, verificationToken: null },
+        { where: { verificationToken } }
+    );
+};
+
+const resendVerificationMail = async (email) => {
+    const user = await findUser({ email });
+
+    if (!user) {
+        throw HttpError(404, "User not found");
+    }
+
+    if (user.verify) {
+        throw HttpError(400, "Verification has already been passed");
+    }
+
+    await sendVerificationMail(email, user.verificationToken);
+};
 
 const loginUser = async payload => {
     const { password } = payload;
@@ -28,6 +67,10 @@ const loginUser = async payload => {
 
     if (!user) {
         throw HttpError(401, "Email or password is wrong");
+    }
+
+    if (!user.verify) {
+        throw HttpError(401, "Email has not been confirmed yet");
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
@@ -92,4 +135,13 @@ const updateAvatar = async ({ userId, file }) => {
     return avatarURL;
 };
 
-export default { findUser, registerUser, loginUser, logoutUser, updateSubscriptionUser, updateAvatar };
+export default {
+    findUser,
+    registerUser,
+    loginUser,
+    logoutUser,
+    updateSubscriptionUser,
+    updateAvatar,
+    verifyUser,
+    resendVerificationMail
+};

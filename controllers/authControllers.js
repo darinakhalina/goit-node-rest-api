@@ -1,4 +1,5 @@
 import authServices from "../services/authServices.js";
+import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../helpers/ctrlWrapper.js";
 
 const registerUser = async (req, res) => {
@@ -8,6 +9,26 @@ const registerUser = async (req, res) => {
         user: { email: userData.email, subscription: userData.subscription },
     });
 }
+
+const verifyUser = async (req, res) => {
+    const { verificationToken } = req.params;
+
+    await authServices.verifyUser(verificationToken);
+
+    res.status(200).json({ message: "Verification successful" });
+};
+
+export const resendVerificationMail = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        throw HttpError(400, "Missing required field email");
+    }
+
+    await authServices.resendVerificationMail(email);
+
+    res.status(200).json({ message: "Verification email sent" });
+};
 
 const loginUser = async (req, res) => {
     const userData = await authServices.loginUser(req.body);
@@ -61,4 +82,6 @@ export default {
     logoutUser: ctrlWrapper(logoutUser),
     updateSubscriptionUser: ctrlWrapper(updateSubscriptionUser),
     updateAvatar: ctrlWrapper(updateAvatar),
+    verifyUser: ctrlWrapper(verifyUser),
+    resendVerificationMail: ctrlWrapper(resendVerificationMail),
 }
