@@ -22,6 +22,8 @@ DATABASE_PASSWORD=password
 DATABASE_HOST=host
 DATABASE_PORT=port
 JWT_SECRET=secret
+UKR_NET_EMAIL=email
+UKR_NET_PASSWORD=password
 ```
 
 ## Запусти веб-додаток
