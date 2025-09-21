@@ -1,4 +1,5 @@
 import authServices from "../services/authServices.js";
+import ctrlWrapper from "../helpers/ctrlWrapper.js";
 
 const registerUser = async (req, res) => {
     const userData = await authServices.registerUser(req.body);
@@ -18,11 +19,12 @@ const loginUser = async (req, res) => {
 }
 
 const getCurrentUser = async (req, res) => {
-    const { email, subscription } = req.user;
+    const { email, subscription, avatarURL } = req.user;
 
     res.status(200).json({
-        email: email,
-        subscription: subscription
+        email,
+        subscription,
+        avatarURL,
     })
 }
 
@@ -42,10 +44,21 @@ const updateSubscriptionUser = async (req, res) => {
     res.status(200).json({ email: user.email, subscription: user.subscription });
 };
 
+const updateAvatar = async (req, res) => {
+    const {
+        file,
+        user: { id: userId },
+    } = req;
+
+    const avatarURL = await authServices.updateAvatar({ userId, file });
+    res.status(200).json({ avatarURL: avatarURL });
+}
+
 export default {
-    registerUser,
-    loginUser,
-    getCurrentUser,
-    logoutUser,
-    updateSubscriptionUser,
+    registerUser: ctrlWrapper(registerUser),
+    loginUser: ctrlWrapper(loginUser),
+    getCurrentUser: ctrlWrapper(getCurrentUser),
+    logoutUser: ctrlWrapper(logoutUser),
+    updateSubscriptionUser: ctrlWrapper(updateSubscriptionUser),
+    updateAvatar: ctrlWrapper(updateAvatar),
 }
