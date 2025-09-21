@@ -4,6 +4,8 @@
 
 ### Гілка hw06-email
 
+https://goit-node-rest-api-hw-6.onrender.com
+
 ## Запуск
 
 ### Встанови залежності
@@ -24,6 +26,7 @@ DATABASE_PORT=port
 JWT_SECRET=secret
 UKR_NET_EMAIL=email
 UKR_NET_PASSWORD=password
+APP_BASE_URL=http://localhost:3000
 ```
 
 ## Запусти веб-додаток
@@ -43,4 +46,3 @@ npm run dev
 ```bash
 npm run test
 ```
-

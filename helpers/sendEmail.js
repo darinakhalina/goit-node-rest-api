@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import "dotenv/config";
 
-const { UKR_NET_EMAIL, UKR_NET_PASSWORD } = process.env;
+const { UKR_NET_EMAIL, UKR_NET_PASSWORD, APP_BASE_URL, PORT } = process.env;
 
 const nodemailerConfig = {
     host: "smtp.ukr.net",
@@ -15,7 +15,12 @@ const nodemailerConfig = {
 
 const transport = nodemailer.createTransport(nodemailerConfig);
 
+const BASE_URL = APP_BASE_URL || `http://localhost:${PORT || 3000}`;
+
+
 export const sendVerificationMail = async (email, verificationToken) => {
+    const verifyUrl = `${BASE_URL}/api/auth/verify/${verificationToken}`;
+
     const emailOptions = {
         from: UKR_NET_EMAIL,
         to: email,
@@ -42,7 +47,7 @@ export const sendVerificationMail = async (email, verificationToken) => {
                 </p>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="http://localhost:3000/api/auth/verify/${verificationToken}"
+                    <a href="${verifyUrl}"
                         style="
                             display: inline-block;
                             padding: 14px 28px;
@@ -60,7 +65,7 @@ export const sendVerificationMail = async (email, verificationToken) => {
                     Якщо кнопка не працює, скористайтесь цим посиланням:
                 </p>
                 <p style="font-size: 14px; color: #0066cc; word-break: break-word;">
-                    http://localhost:3000/api/auth/verify/${verificationToken}
+                    ${verifyUrl}
                 </p>
                 
                 <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;">
